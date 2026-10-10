@@ -462,7 +462,7 @@ function fieldOK(inputId, errId, ok) {
   else { inp.classList.add('input-invalid'); err.classList.add('show'); }
   return ok;
 }
-function doLogin(e) {
+async function doLogin(e) {
   e.preventDefault();
   const user = document.getElementById('login-user').value.trim();
   const pass = document.getElementById('login-pass').value;
@@ -470,15 +470,50 @@ function doLogin(e) {
   ok = fieldOK('login-user', 'err-login-user', user !== '') && ok;
   ok = fieldOK('login-pass', 'err-login-pass', pass !== '') && ok;
   if (!ok) return false;
-  if (isSuspended() && user.toLowerCase() !== OWNER_USER) { toast('⛔ Akses ditangguhkan sementara waktu, Silahkan menghubungi CV. Kayu Awet Sejahtera', 'error', 6000); return false; }
-  const acc = lsGet(LS_USERS, []).find(u => u.user.toLowerCase() === user.toLowerCase() && u.pass === b64(pass));
-  if (!acc) { toast('❌ Username atau password salah!', 'error'); return false; }
+
+  // Coba verifikasi backend API terlebih dahulu untuk keamanan token & rate-limiting
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user, pass })
+    });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      if (data.token) {
+        localStorage.setItem('mrb_token', data.token);
+      }
+      lsSet(LS_SESSION, { user: data.session.user, name: data.session.name });
+      toast('✅ Login berhasil. Selamat datang, <b>' + esc(data.session.name) + '</b>!', 'success');
+      enterAdmin();
+      return false;
+    } else if (res.status === 403 || res.status === 429) {
+      toast(data.message || 'Akses ditolak', 'error', 5000);
+      return false;
+    }
+  } catch (err) {
+    // Mode offline: fallback ke verifikasi lokal
+  }
+
+  if (isSuspended() && user.toLowerCase() !== OWNER_USER) {
+    toast('⛔ Akses ditangguhkan sementara waktu, Silahkan menghubungi CV. Kayu Awet Sejahtera', 'error', 6000);
+    return false;
+  }
+  const acc = lsGet(LS_USERS, []).find(u => u.user.toLowerCase() === user.toLowerCase() && (u.pass === b64(pass) || u.pass === pass));
+  if (!acc) {
+    toast('❌ Username atau password salah!', 'error');
+    return false;
+  }
   lsSet(LS_SESSION, { user: acc.user, name: acc.name });
   toast('✅ Login berhasil. Selamat datang, <b>' + esc(acc.name) + '</b>!', 'success');
-  enterAdmin(); return false;
+  enterAdmin();
+  return false;
 }
 function doLogout() {
-  try { localStorage.removeItem(LS_SESSION); } catch (e) {}
+  try {
+    localStorage.removeItem(LS_SESSION);
+    localStorage.removeItem('mrb_token');
+  } catch (e) {}
   toast('👋 Anda telah logout.', 'info');
   showView('view-landing');
 }
@@ -490,6 +525,15 @@ function enterAdmin() {
 }
 function enterMonitoring() { showView('view-monitoring'); monTab('peta'); }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function escJs(s) { return String(s == null ? '' : s).replace(/['"\\\n\r\u2028\u2029]/g, c => '\\' + c); }
+function sanitizeUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('data:image/') || trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/') || trimmed.startsWith('img/')) {
+    return esc(trimmed);
+  }
+  return '';
+}
 
 // =====================================================
 // WILAYAH (Sumsel via API emsifa + fallback offline)
@@ -1243,11 +1287,11 @@ function renderBigTable() {
   if (!rows.length) { tb.innerHTML = '<tr><td colspan="8"><div class="empty-state">📭 Tidak ada data. <a href="#" onclick="adminNav(\'new\');return false">Tambah data baru</a></div></td></tr>'; if (pi) pi.textContent = 'Halaman 0 / 0'; if (pv) pv.disabled = true; if (nx) nx.disabled = true; return; }
   tb.innerHTML = info.page.map((s, i) => `<tr>
     <td>${start + i + 1}</td><td>${esc(s.tahun)}</td>
-    <td><span class="id-link" onclick="openDetail('${s.id}','admin')">🔗 ${esc(s.surveyNo)}</span></td>
+    <td><span class="id-link" onclick="openDetail('${escJs(s.id)}','admin')">🔗 ${esc(s.surveyNo)}</span></td>
     <td>${esc(s.usulanNo)}</td><td>${esc(s.kabkota)}</td><td>${esc(s.kecamatan)}</td><td>${esc(s.kelurahan)}</td>
-    <td style="white-space:nowrap"><button class="btn btn-primary btn-sm" onclick="openDetail('${s.id}','admin')">👁️</button>
-    <button class="btn btn-warning btn-sm" onclick="editSurvey('${s.id}')">✏️</button>
-    <button class="btn btn-danger btn-sm" onclick="deleteSurvey('${s.id}')">🗑️</button></td></tr>`).join('');
+    <td style="white-space:nowrap"><button class="btn btn-primary btn-sm" onclick="openDetail('${escJs(s.id)}','admin')">👁️</button>
+    <button class="btn btn-warning btn-sm" onclick="editSurvey('${escJs(s.id)}')">✏️</button>
+    <button class="btn btn-danger btn-sm" onclick="deleteSurvey('${escJs(s.id)}')">🗑️</button></td></tr>`).join('');
   if (pi) pi.textContent = 'Halaman ' + bigPage + ' / ' + max + ' • ' + info.page.length + ' dari ' + rows.length + ' data';
   if (pv) pv.disabled = bigPage <= 1;
   if (nx) nx.disabled = bigPage >= max;
@@ -1285,11 +1329,11 @@ function openDetail(id, mode) {
       ${row('Titik Awal', s.koorAwal)}${row('Titik Tengah', s.koorTengah)}${row('Titik Akhir', s.koorAkhir)}
     </table><div id="detail-map" class="map-box" style="height:260px;margin-top:10px"></div></div>
     <div class="detail-section"><h4>📷 Foto (${(s.photos || []).length})</h4>
-      <div class="detail-photos">${(s.photos || []).map((p, i) => `<img src="${p}" onclick="openLightbox({src:'${p}'})" alt="Foto ${i + 1}">`).join('') || '<i style="color:#9ca3af">Tidak ada foto</i>'}</div></div>
+      <div class="detail-photos">${(s.photos || []).map((p, i) => `<img src="${sanitizeUrl(p)}" onclick="openLightbox({src:'${escJs(p)}'})" alt="Foto ${i + 1}">`).join('') || '<i style="color:#9ca3af">Tidak ada foto</i>'}</div></div>
     <div class="detail-section"><h4>📝 Usulan & Deskripsi</h4><p style="font-size:13.5px;white-space:pre-wrap">${s.uraian ? esc(s.uraian) : '<i style="color:#9ca3af">-</i>'}</p></div>
     <div class="btn-row">
-      ${mode === 'admin' ? `<button class="btn btn-warning" onclick="editSurvey('${s.id}')">✏️ Edit Data</button>
-      <button class="btn btn-danger" onclick="deleteSurvey('${s.id}')">🗑️ Hapus</button>` : ''}
+      ${mode === 'admin' ? `<button class="btn btn-warning" onclick="editSurvey('${escJs(s.id)}')">✏️ Edit Data</button>
+      <button class="btn btn-danger" onclick="deleteSurvey('${escJs(s.id)}')">🗑️ Hapus</button>` : ''}
       <button class="btn btn-ghost" onclick="closeModal()">Tutup</button>
     </div>`;
   document.getElementById('detail-modal').classList.add('show');
@@ -1334,12 +1378,12 @@ function renderMonitoringMap() {
     const pts = [parseCoord(s.koorAwal), parseCoord(s.koorTengah), parseCoord(s.koorAkhir)];
     const valid = pts.filter(Boolean);
     valid.forEach(p => allPts.push(p));
-    const photos = (s.photos || []).slice(0, 3).map(p => `<img src="${p}">`).join('');
+    const photos = (s.photos || []).slice(0, 3).map(p => { const sp = sanitizeUrl(p); return sp ? `<img src="${sp}">` : ''; }).join('');
     const popup = `<b class="t">🔗 ${esc(s.surveyNo)}</b><br>
       <b>ID Usulan:</b> ${esc(s.usulanNo)}<br><b>Alamat:</b> ${esc(s.alamat)}, ${esc(s.kelurahan)}, ${esc(s.kecamatan)}<br>
       <b>Tahun:</b> ${esc(s.tahun)} &nbsp; <b>Petugas:</b> ${esc(s.petugas)}<br>
       <b>Status:</b> ${esc(s.banjir || '-')} ${photos}<br>
-      <a href="#" onclick="openDetail('${s.id}','mon');return false">Lihat detail ➜</a>`;
+      <a href="#" onclick="openDetail('${escJs(s.id)}','mon');return false">Lihat detail ➜</a>`;
     const labels = ['Titik Awal', 'Titik Tengah', 'Titik Akhir'];
     pts.forEach((c, i) => { if (c) L.marker(c).addTo(monLayer).bindPopup(`<b>${labels[i]} — ${esc(s.surveyNo)}</b><br>` + popup); });
     if (valid.length >= 2) L.polyline(valid, { color: s.banjir === 'Banjir' ? '#e02424' : '#0b5fff', weight: 3 }).addTo(monLayer).bindPopup(popup);
@@ -1367,7 +1411,7 @@ function renderMonTable() {
   const tb = document.getElementById('mon-tbody');
   if (!rows.length) { tb.innerHTML = '<tr><td colspan="7"><div class="empty-state">📭 Tidak ada data ditemukan.</div></td></tr>'; return; }
   tb.innerHTML = rows.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.tahun)}</td>
-    <td><span class="id-link" onclick="openDetail('${s.id}','mon')">🔗 ${esc(s.surveyNo)}</span></td>
+    <td><span class="id-link" onclick="openDetail('${escJs(s.id)}','mon')">🔗 ${esc(s.surveyNo)}</span></td>
     <td>${esc(s.usulanNo)}</td><td>${esc(s.kabkota)}</td><td>${esc(s.kecamatan)}</td><td>${esc(s.kelurahan)}</td></tr>`).join('');
 }
 

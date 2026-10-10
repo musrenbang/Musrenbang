@@ -46,6 +46,15 @@ export function setCachedSurveys(surveys: SurveyRecord[]) {
   }
 }
 
+export function getAuthHeaders(): Record<string, string> {
+  const token = localStorage.getItem('mrb_token');
+  const session = getLocalSession();
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  if (session?.user) headers['x-admin-user'] = session.user;
+  return headers;
+}
+
 // API functions with seamless online/offline fallback
 export async function apiFetchSurveys(): Promise<SurveyRecord[]> {
   try {
@@ -72,7 +81,7 @@ export async function apiSaveSurvey(survey: SurveyRecord): Promise<SurveyRecord>
 
     const res = await fetch(url, {
       method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify(survey)
     });
 
@@ -100,7 +109,8 @@ export async function apiDeleteSurvey(id: string): Promise<boolean> {
   let ok = false;
   try {
     const res = await fetch(`/api/surveys/${encodeURIComponent(id)}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeaders()
     });
     ok = res.ok;
   } catch (err) {
@@ -129,7 +139,11 @@ export async function apiGetSystemStatus(): Promise<SystemStatus> {
 
 export async function apiToggleSuspend(): Promise<SystemStatus> {
   try {
-    const res = await fetch('/api/system/suspend', { method: 'POST' });
+    const res = await fetch('/api/system/suspend', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ user: getLocalSession()?.user })
+    });
     if (res.ok) {
       const status = await res.json();
       if (status.suspended) {
@@ -155,7 +169,11 @@ export async function apiToggleSuspend(): Promise<SystemStatus> {
 
 export async function apiResetDefaultPasswords(): Promise<boolean> {
   try {
-    const res = await fetch('/api/system/reset-passwords', { method: 'POST' });
+    const res = await fetch('/api/system/reset-passwords', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ user: getLocalSession()?.user })
+    });
     if (res.ok) return true;
   } catch {}
   localStorage.removeItem(LS_USERS);
@@ -171,6 +189,9 @@ export async function apiLogin(user: string, pass: string): Promise<{ ok: boolea
     });
     const result = await res.json();
     if (result.ok && result.session) {
+      if (result.token) {
+        localStorage.setItem('mrb_token', result.token);
+      }
       setLocalSession(result.session);
     }
     return result;

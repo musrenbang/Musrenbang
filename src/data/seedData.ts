@@ -1,0 +1,145 @@
+import { SurveyRecord } from '../types';
+
+function createSvgPlaceholder(text: string, c1: string, c2: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${c1}"/>
+        <stop offset="100%" stop-color="${c2}"/>
+      </linearGradient>
+    </defs>
+    <rect width="640" height="480" fill="url(#g)"/>
+    <circle cx="320" cy="180" r="70" fill="white" opacity="0.15"/>
+    <text x="320" y="240" font-size="34" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial, sans-serif">${text}</text>
+    <text x="320" y="290" font-size="18" fill="white" opacity="0.9" text-anchor="middle" font-family="Arial, sans-serif">MUSRENBANG APPS 2027</text>
+    <text x="320" y="440" font-size="14" fill="white" opacity="0.75" text-anchor="middle" font-family="Arial, sans-serif">Provinsi Sumatera Selatan</text>
+  </svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
+export const INITIAL_SURVEYS: SurveyRecord[] = [
+  {
+    id: 'SEED1',
+    tahun: '2027',
+    surveyNo: 'SRV-2027-001',
+    usulanNo: 'USL-2027-001',
+    petugas: 'Andi Pratama',
+    alamat: 'Jl. Merdeka No. 45',
+    rt: 'RT 05 / RW 02',
+    prov: 'Sumatera Selatan',
+    kabkotaId: '1671',
+    kabkota: 'Kota Palembang',
+    kecamatanId: '167101',
+    kecamatan: 'Ilir Barat I',
+    kelurahan: 'Bukit Lama',
+    namaPejabat: 'H. Sulaiman (Lurah)',
+    hp: '081278910001',
+    banjir: 'Banjir',
+    tinggi: '40',
+    lama: '6',
+    luas: '2 Ha',
+    frekuensi: '4',
+    eko: 'Kawasan Perumahan',
+    fasos: 'Terbatas / Beberapa',
+    trans: 'Sedikit / Kurang padat',
+    mukim: 'Padat',
+    hak: '80%',
+    sedimen: 'Sedang (±30cm)',
+    sampah: 'Banyak sampah rumah tangga',
+    koorAwal: '-2.9834,104.7328',
+    koorTengah: '-2.9851,104.7352',
+    koorAkhir: '-2.9872,104.7379',
+    photos: [
+      createSvgPlaceholder('Foto Saluran Primer Bukit Lama', '#0b5fff', '#062f7e'),
+      createSvgPlaceholder('Foto Titik Genangan Jl. Merdeka', '#0e9f6e', '#064e3b')
+    ],
+    uraian: 'Usulan normalisasi saluran primer sepanjang ±500m di Jl. Merdeka Bukit Lama. Genangan air terjadi setiap musim hujan lebat, merendam ±120 KK. Diperlukan pengerukan sedimentasi, pemasangan turap beton, serta penambahan grill penangkap sampah.',
+    status: 'Belum Clean & Clear',
+    createdBy: 'admin',
+    createdAt: '2026-10-08T08:00:00.000Z',
+    updatedAt: '2026-10-08T08:00:00.000Z'
+  },
+  {
+    id: 'SEED2',
+    tahun: '2027',
+    surveyNo: 'SRV-2027-002',
+    usulanNo: 'USL-2027-002',
+    petugas: 'Siti Rahma',
+    alamat: 'Jl. Lintas Timur Km. 12',
+    rt: 'RT 03 / RW 01',
+    prov: 'Sumatera Selatan',
+    kabkotaId: '1607',
+    kabkota: 'Kabupaten Banyuasin',
+    kecamatanId: '160701',
+    kecamatan: 'Talang Kelapa',
+    kelurahan: 'Sukomoro',
+    namaPejabat: 'Budi Santoso (Kades)',
+    hp: '081278910002',
+    banjir: 'Tidak Banjir',
+    tinggi: '',
+    lama: '',
+    luas: '',
+    frekuensi: '',
+    eko: '',
+    fasos: '',
+    trans: '',
+    mukim: '',
+    hak: '',
+    sedimen: 'Ringan',
+    sampah: 'Sedikit',
+    koorAwal: '-2.9995,104.7120',
+    koorTengah: '-3.0018,104.7154',
+    koorAkhir: '-3.0042,104.7188',
+    photos: [
+      createSvgPlaceholder('Foto Lokasi Usulan Drainase Baru', '#f59e0b', '#92400e'),
+      createSvgPlaceholder('Foto Trase Saluran Sukomoro', '#7c3aed', '#4c1d95')
+    ],
+    uraian: 'Usulan pembangunan drainase baru di kawasan permukiman Sukomoro sepanjang 800m untuk antisipasi perluasan kawasan perumahan baru dan memperlancar pembuangan air ke sungai penerima.',
+    status: 'Clean & Clear',
+    createdBy: 'admin',
+    createdAt: '2026-10-08T09:30:00.000Z',
+    updatedAt: '2026-10-08T09:30:00.000Z'
+  },
+  {
+    id: 'SEED3',
+    tahun: '2026',
+    surveyNo: 'SRV-2026-015',
+    usulanNo: 'USL-2026-015',
+    petugas: 'Andi Pratama',
+    alamat: 'Jl. Raya Indralaya Km. 32',
+    rt: 'RT 08 / RW 03',
+    prov: 'Sumatera Selatan',
+    kabkotaId: '1610',
+    kabkota: 'Kabupaten Ogan Ilir',
+    kecamatanId: '161001',
+    kecamatan: 'Indralaya',
+    kelurahan: 'Tanjung Sejaro',
+    namaPejabat: 'Drs. Herman (Camat)',
+    hp: '081278910003',
+    banjir: 'Banjir',
+    tinggi: '60',
+    lama: '12',
+    luas: '5 Ha',
+    frekuensi: '6',
+    eko: 'Industri, Komersil, Perkantoran kurang padat',
+    fasos: 'Padat',
+    trans: 'Padat',
+    mukim: 'Sedikit / Kurang padat',
+    hak: '> 80%',
+    sedimen: 'Berat (±80cm)',
+    sampah: 'Banyak + eceng gondok',
+    koorAwal: '-3.2094,104.6521',
+    koorTengah: '-3.2110,104.6540',
+    koorAkhir: '-3.2135,104.6562',
+    photos: [
+      createSvgPlaceholder('Foto Banjir Luapan Sungai Indralaya', '#e02424', '#7f1d1d'),
+      createSvgPlaceholder('Foto Sedimentasi & Eceng Gondok', '#06b6d4', '#164e63'),
+      createSvgPlaceholder('Foto Saluran Gorong-gorong', '#84cc16', '#365314')
+    ],
+    uraian: 'Banjir tahunan luapan sungai merendam badan jalan raya arteri Indralaya dan 2 sekolah dasar. Diperlukan pengerukan sedimen total, pembersihan eceng gondok berkala, serta perbaikan gorong-gorong box culvert.',
+    status: 'Belum Clean & Clear',
+    createdBy: 'admin',
+    createdAt: '2026-10-07T14:15:00.000Z',
+    updatedAt: '2026-10-07T14:15:00.000Z'
+  }
+];

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b5fff">
+<link rel="icon" href="img/logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="img/logo.png">
+<title>MUSRENBANG APPS 2027 Vers.1.1.2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<div id="splash" onclick="hideSplash()">
+  <img src="img/logo.png" class="splash-logo" alt="Logo Musrenbang 2027">
+  <h1>MUSRENBANG APPS 2027</h1>
+  <p class="tagline">Survey Musyawarah Perencanaan Pembangunan<br>Provinsi Sumatera Selatan</p>
+  <span class="ver-chip">Vers.1.1.2</span>
+  <div class="loadbar"><span></span></div>
+  <p class="credit">Developer Apps : <b>M.Afifi Eka Putra, S.E &mdash; CV. Kayu Awet Sejahtera</b></p>
+</div>
+
+<header class="top-header">
+  <div class="brand-row">
+    <img src="img/logo.png" alt="Logo Musrenbang 2027" class="header-logo">
+    <h1>MUSRENBANG APPS 2027 <span class="ver">Vers.1.1.2</span></h1>
+  </div>
+  <p>Aplikasi Survey Musyawarah Perencanaan Pembangunan — Provinsi Sumatera Selatan</p>
+  <span id="network-status-badge" class="net-badge online">🟢 Online</span>
+</header>
+
+<main class="container">
+
+  <!-- ==================== VIEW: LANDING ==================== -->
+  <section id="view-landing" class="view active">
+    <div class="hero-brand">
+      <div class="app-logo"><img src="img/logo.png" alt="Logo Musrenbang 2027"></div>
+      <h2>MUSRENBANG APPS 2027</h2>
+      <p>Survey Musyawarah Perencanaan Pembangunan<br>Provinsi Sumatera Selatan</p>
+      <div class="stat-pills">
+        <span class="pill">📊 <b id="landing-total">0</b> Data Survey</span>
+        <span class="pill">🗺️ Peta Sumsel</span>
+        <span class="pill">📁 Word / Excel / PDF</span>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-card" onclick="showView('view-admin-auth')">
+        <div class="icon-bubble">🔐</div>
+        <div><h3>Dashboard Admin</h3><p>Kelola penuh database survey</p></div>
+        <span class="arrow">›</span>
+      </div>
+      <div class="menu-card green" onclick="enterMonitoring()">
+        <div class="icon-bubble">🗺️</div>
+        <div><h3>Dashboard Monitoring</h3><p>Preview peta & laporan hasil</p></div>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature"><div class="fi">📍</div><p>Peta Titik Koordinat</p></div>
+      <div class="feature"><div class="fi">📷</div><p>Foto Auto-Compress</p></div>
+      <div class="feature"><div class="fi">📊</div><p>Grafik Laporan</p></div>
+      <div class="feature"><div class="fi">📁</div><p>Export Dokumen</p></div>
+    </div>
+
+    <div class="card install-card">
+      <b>📲 Instal Aplikasi (Android / iPhone / PC)</b>
+      <p class="hint">Android/PC: menu ⋮ browser → <b>Install App / Tambah ke Layar Utama</b>.<br>iPhone: ketuk <b>Bagikan ⎙</b> → <b>Add to Home Screen</b>. Aplikasi terbuka layar penuh &amp; tetap bisa dibuka offline.</p>
+    </div>
+
+    <div class="card steps-card">
+      <h2>✨ Cara Menggunakan</h2>
+      <div class="step-row"><span class="step-num">1</span><p><b>Admin:</b> buat akun / login, lalu input data survey lapangan lengkap dengan foto & titik koordinat.</p></div>
+      <div class="step-row"><span class="step-num">2</span><p><b>Kelola:</b> cari, filter, edit, dan export seluruh database ke Word / Excel / PDF.</p></div>
+      <div class="step-row"><span class="step-num">3</span><p><b>Monitoring:</b> pantau semua titik di peta interaktif beserta grafik laporan.</p></div>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW: ADMIN AUTH ==================== -->
+  <section id="view-admin-auth" class="view">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="logo-bubble"><img src="img/logo.png" alt="Logo"></div>
+        <h2>Dashboard Admin</h2>
+        <p class="sub">Login untuk mengelola database survey</p>
+        <div id="suspend-banner" class="suspend-banner" style="display:none"></div>
+        <!-- LOGIN -->
+        <form id="form-login" onsubmit="return doLogin(event)">
+          <div class="form-group">
+            <label>Username / Email <span class="req">*</span></label>
+            <input type="text" id="login-user" placeholder="Masukkan username atau email">
+            <div class="error-msg" id="err-login-user">wajib diisi</div>
+          </div>
+          <div class="form-group">
+            <label>Password <span class="req">*</span></label>
+            <input type="password" id="login-pass" placeholder="Masukkan password">
+            <div class="error-msg" id="err-login-pass">wajib diisi</div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">🔓 Login</button>
+        </form>
+
+      </div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-ghost" onclick="showView('view-landing')">⬅ Kembali ke Dashboard Awal</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW: ADMIN MAIN ==================== -->
+  <section id="view-admin" class="view">
+    <div class="page-bar">
+      <div class="pt"><b id="admin-page-title">🏠 Home</b><small id="admin-page-sub">Dashboard Administrator</small></div>
+    </div>
+    <div class="profile-accordion" id="profile-accordion">
+      <button class="pa-head" onclick="toggleAccordion(event)">
+        <span class="p-avatar" id="pa-avatar">A</span>
+        <span class="pa-name" id="pa-name">Administrator</span>
+        <span class="p-chev">▾</span>
+      </button>
+      <div class="pa-body">
+        <div class="pa-menu" id="pa-menu">
+          <button onclick="paShow('profile')">📝 Edit Profil</button>
+          <button onclick="paShow('password')">🔑 Ganti Password</button>
+          <button class="danger" onclick="doLogout()">🚪 Keluar</button>
+        </div>
+        <div class="pa-panel" id="pa-panel-profile" style="display:none">
+          <form onsubmit="return doEditProfile(event)">
+            <div class="form-group"><label>Nama Tampilan <span class="req">*</span></label><input type="text" name="dname" id="pa-dname" placeholder="Nama tampilan"><div class="error-msg">wajib diisi</div></div>
+            <div class="btn-row"><button class="btn btn-primary btn-sm" type="submit">💾 Simpan</button><button class="btn btn-sm pa-back" type="button" onclick="paShow('menu')">‹ Kembali</button></div>
+            <div id="owner-reset-wrap" style="margin-top:10px"></div>
+          </form>
+        </div>
+        <div class="pa-panel" id="pa-panel-password" style="display:none">
+          <form onsubmit="return doChangePassword(event)">
+            <div class="form-group"><label>Password Lama <span class="req">*</span></label><input type="password" name="old" placeholder="Password saat ini"><div class="error-msg">wajib diisi</div></div>
+            <div class="form-group"><label>Password Baru <span class="req">*</span></label><input type="password" name="new" placeholder="Minimal 4 karakter"><div class="error-msg">wajib diisi</div></div>
+            <div class="form-group"><label>Konfirmasi Baru <span class="req">*</span></label><input type="password" name="new2" placeholder="Ulangi password baru"><div class="error-msg">wajib diisi</div></div>
+            <div class="btn-row"><button class="btn btn-warning btn-sm" type="submit">🔑 Ganti Password</button><button class="btn btn-sm pa-back" type="button" onclick="paShow('menu')">‹ Kembali</button></div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="admin-wrap">
+      <aside class="sidebar">
+        <div class="user-box">
+          <div class="avatar">👤</div>
+          <b id="admin-username">Admin</b><br><small>Administrator</small>
+        </div>
+        <button class="nav-btn active" id="nav-home" onclick="adminNav('home')">🏠 Home</button>
+        <button class="nav-btn" id="nav-new" onclick="adminNav('new')">📝 New Data Survey</button>
+        <button class="nav-btn" id="nav-big" onclick="adminNav('big')">🗂️ Big Data Survey <span class="badge" id="badge-total">0</span></button>
+        <button class="nav-btn" id="nav-grafik" onclick="adminNav('grafik')">📊 Monitoring Report</button>
+        <button class="nav-btn" onclick="showView('view-landing')">🏠 Dashboard Awal</button>
+        <button class="nav-btn logout" onclick="doLogout()">🚪 Logout</button>
+      </aside>
+
+      <div class="admin-content">
+        <div class="admin-topbar">
+          <div class="at-title"><b>Admin Dashboard</b><small>Kelola database survey Musrenbang 2027</small></div>
+          <div class="profile-wrap" id="profile-desktop">
+            <button class="profile-btn" onclick="toggleProfileMenu(event,'profile-desktop')">
+              <span class="p-avatar" id="dd-avatar">A</span>
+              <span class="p-name" id="dd-name">Administrator</span>
+              <span class="p-chev">▾</span>
+            </button>
+            <div class="profile-menu">
+              <button onclick="openProfileModal('profile')">📝 Edit Profil</button>
+              <button onclick="openProfileModal('password')">🔑 Ganti Password</button>
+              <button class="danger" onclick="doLogout()">🚪 Keluar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ADMIN: HOME ===== -->
+        <div id="admin-home">
+          <div class="card welcome-card">
+            <h2>👋 Selamat Datang, <span id="home-username">Admin</span>!</h2>
+            <p class="date" id="home-date"></p>
+            <div class="stat-grid" id="home-stats" style="margin:14px 0 0"></div>
+          </div>
+          <div class="card feat-card">
+            <div class="fic">📝</div>
+            <div>
+              <h4>Menu Input &mdash; New Data Survey</h4>
+              <p>Gunakan menu ini untuk menambah data survey lapangan. Mohon diperhatikan dengan seksama: <b>&#9312;</b> semua kolom bertanda bintang (<b>*</b>) wajib diisi &mdash; data tidak dapat disimpan apabila masih ada yang kosong; <b>&#9313;</b> tentukan titik koordinat minimal <b>2 titik (Awal dan Akhir)</b> secara akurat melalui klik peta atau tombol <b>Lokasi Saya</b>; <b>&#9314;</b> lampirkan minimal <b>2 foto</b> dokumentasi; <b>&#9315;</b> periksa kembali seluruh isian sebelum menekan <b>Save</b>. Terima kasih atas ketelitian Bapak/Ibu.</p>
+              <button class="btn btn-primary btn-sm" onclick="adminNav('new')">➕ Mulai Input Data</button>
+            </div>
+          </div>
+          <div class="card feat-card">
+            <div class="fic">🗂️</div>
+            <div>
+              <h4>Menu Data &mdash; Big Data Survey</h4>
+              <p>Kelola seluruh database survey dengan mudah: gunakan <b>kolom pencarian</b> dan <b>filter</b> untuk menemukan data, klik <b>No. ID Survey</b> untuk melihat detail, serta manfaatkan tombol <b>edit</b>, <b>hapus</b>, dan <b>export Word / Excel / PDF</b> sesuai kebutuhan.</p>
+              <button class="btn btn-primary btn-sm" onclick="adminNav('big')">🗂️ Buka Big Data</button>
+            </div>
+          </div>
+          <div class="card feat-card">
+            <div class="fic">📊</div>
+            <div>
+              <h4>Menu Grafik &mdash; Monitoring Report</h4>
+              <p>Pantau <b>Monitoring Report</b> dalam bentuk <b>grafik dan diagram</b> interaktif: rekap data per-tahun, per-kecamatan, per-kelurahan, dan per-petugas survey secara cepat dan jelas.</p>
+              <button class="btn btn-primary btn-sm" onclick="adminNav('grafik')">📊 Lihat Grafik</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ADMIN: NEW DATA SURVEY ===== -->
+        <div id="admin-new">
+          <div class="card">
+            <h2>📝 <span id="form-title">New Data Survey</span></h2>
+            <p class="subtitle">Isi seluruh form database survey. Kolom bertanda <span style="color:red">*</span> wajib diisi.</p>
+
+            <form id="survey-form" onsubmit="return saveSurvey(event)" novalidate>
+              <input type="hidden" id="edit-id" value="">
+
+              <!-- 1. TAHUN -->
+              <h3>1. Tahun Survey</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Tahun <span class="req">*</span></label>
+                  <select id="f-tahun"><option value="">-- Pilih Tahun --</option></select>
+                  <div class="error-msg" id="err-f-tahun">wajib dipilih</div>
+                </div>
+              </div>
+
+              <!-- 2. ID SURVEY -->
+              <h3>2. ID Survey</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>a. No. ID Survey <span class="req">*</span></label>
+                  <input type="text" id="f-survey-no" placeholder="Contoh: SRV-2027-001">
+                  <div class="error-msg" id="err-f-survey-no">wajib diisi</div>
+                </div>
+                <div class="form-group">
+                  <label>b. No. ID Usulan Survey <span class="req">*</span></label>
+                  <input type="text" id="f-usulan-no" placeholder="Contoh: USL-2027-001">
+                  <div class="error-msg" id="err-f-usulan-no">wajib diisi</div>
+                </div>
+                <div class="form-group">
+                  <label>c. Petugas Surveyor <span class="req">*</span></label>
+                  <input type="text" id="f-petugas" placeholder="Nama petugas surveyor">
+                  <div class="error-msg" id="err-f-petugas">wajib diisi</div>
+                </div>
+              </div>
+
+              <!-- 3. INFORMASI LOKASI -->
+              <h3>3. Informasi Lokasi</h3>
+              <div class="form-grid">
+                <div class="form-group" style="grid-column:1/-1">
+                  <label>a. Alamat <span class="req">*</span></label>
+                  <input type="text" id="f-alamat" placeholder="Jalan / alamat lengkap lokasi">
+                  <div class="error-msg" id="err-f-alamat">wajib diisi</div>
+                </div>
+                <div class="form-group">
+                  <label>b. RT / RW <span class="req">*</span></label>
+                  <input type="text" id="f-rt" placeholder="Contoh: RT 05 / RW 02">
+                  <div class="error-msg" id="err-f-rt">wajib diisi</div>
+                </div>
+                <div class="form-group">
+                  <label>c. Provinsi <span class="req">*</span></label>
+                  <select id="f-prov"><option value="Sumatera Selatan" selected>Sumatera Selatan</option></select>
+                  <div class="hint">Pemetaan dikunci: Sumatera Selatan</div>
+                </div>
+                <div class="form-group">
+                  <label>d. Kota / Kabupaten <span class="req">*</span></label>
+                  <select id="f-kabkota" onchange="onKabKotaChange()"><option value="">-- Pilih Kota/Kabupaten --</option></select>
+                  <div class="error-msg" id="err-f-kabkota">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>e. Kecamatan <span class="req">*</span></label>
+                  <select id="f-kecamatan" onchange="onKecamatanChange()"><option value="">-- Pilih Kecamatan --</option></select>
+                  <div class="error-msg" id="err-f-kecamatan">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>f. Kelurahan / Desa <span class="req">*</span></label>
+                  <select id="f-kelurahan"><option value="">-- Pilih Kelurahan --</option></select>
+                  <div class="error-msg" id="err-f-kelurahan">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>g. Nama RT / RW / Lurah / Camat <span class="req">*</span></label>
+                  <input type="text" id="f-nama-pejabat" placeholder="Nama perangkat setempat">
+                  <div class="error-msg" id="err-f-nama-pejabat">wajib diisi</div>
+                </div>
+                <div class="form-group">
+                  <label>h. Contact Person HP <span class="req">*</span></label>
+                  <input type="tel" id="f-hp" placeholder="Contoh: 0812xxxxxxx">
+                  <div class="error-msg" id="err-f-hp">wajib diisi</div>
+                </div>
+              </div>
+
+              <!-- 4. BANJIR -->
+              <h3>4. Banjir / Tidak Banjir</h3>
+              <div class="form-group">
+                <label>Status Banjir <span class="req">*</span></label>
+                <div class="radio-group" id="banjir-toggle">
+                  <label class="radio-card"><input type="radio" name="banjir" value="Banjir" onchange="toggleBanjir()"> 🌊 Banjir</label>
+                  <label class="radio-card"><input type="radio" name="banjir" value="Tidak Banjir" onchange="toggleBanjir()" checked> ☀️ Tidak Banjir</label>
+                </div>
+                <div class="error-msg" id="err-f-banjir">wajib dipilih</div>
+              </div>
+              <div id="banjir-detail" class="flood-box" style="display:none">
+                <b>a. Data Genangan <span class="opt">(optional)</span></b>
+                <div class="form-grid" style="margin-top:10px">
+                  <div class="form-group"><label>Tinggi Genangan (cm)</label><input type="text" id="f-tinggi" placeholder="... cm"></div>
+                  <div class="form-group"><label>Lama Genangan (jam)</label><input type="text" id="f-lama" placeholder="... jam"></div>
+                  <div class="form-group"><label>Luas Genangan (m² / Ha)</label><input type="text" id="f-luas" placeholder="... m² / Ha"></div>
+                  <div class="form-group"><label>Frekuensi Banjir / Tahun (kali)</label><input type="text" id="f-frekuensi" placeholder="... kali"></div>
+                </div>
+                <b>b. Kerugian Jika Banjir</b>
+                <div class="form-group" style="margin-top:10px">
+                  <label>• Ekonomi <span class="req" id="req-eko">*</span></label>
+                  <div class="radio-group" id="g-eko">
+                    <label class="radio-card"><input type="radio" name="eko" value="Industri, Komersil, Perkantoran padat"> Industri, Komersil, Perkantoran padat</label>
+                    <label class="radio-card"><input type="radio" name="eko" value="Industri, Komersil, Perkantoran kurang padat"> Industri, Komersil, Perkantoran kurang padat</label>
+                    <label class="radio-card"><input type="radio" name="eko" value="Kawasan Perumahan"> Kawasan Perumahan</label>
+                    <label class="radio-card"><input type="radio" name="eko" value="Kawasan Tidak Produktif"> Kawasan Tidak Produktif</label>
+                  </div>
+                  <div class="error-msg" id="err-f-eko">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>• Fasilitas Sosial & Pemerintah <span class="req" id="req-fasos">*</span></label>
+                  <div class="radio-group" id="g-fasos">
+                    <label class="radio-card"><input type="radio" name="fasos" value="Padat"> Padat</label>
+                    <label class="radio-card"><input type="radio" name="fasos" value="Sedikit / Kurang padat"> Sedikit / Kurang padat</label>
+                    <label class="radio-card"><input type="radio" name="fasos" value="Terbatas / Beberapa"> Terbatas / Beberapa</label>
+                    <label class="radio-card"><input type="radio" name="fasos" value="Tidak terdapat"> Tidak terdapat</label>
+                  </div>
+                  <div class="error-msg" id="err-f-fasos">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>• Transportasi <span class="req" id="req-trans">*</span></label>
+                  <div class="radio-group" id="g-trans">
+                    <label class="radio-card"><input type="radio" name="trans" value="Padat"> Padat</label>
+                    <label class="radio-card"><input type="radio" name="trans" value="Sedikit / Kurang padat"> Sedikit / Kurang padat</label>
+                    <label class="radio-card"><input type="radio" name="trans" value="Terbatas / Beberapa"> Terbatas / Beberapa</label>
+                    <label class="radio-card"><input type="radio" name="trans" value="Tidak terdapat"> Tidak terdapat</label>
+                  </div>
+                  <div class="error-msg" id="err-f-trans">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>• Permukiman <span class="req" id="req-mukim">*</span></label>
+                  <div class="radio-group" id="g-mukim">
+                    <label class="radio-card"><input type="radio" name="mukim" value="Padat"> Padat</label>
+                    <label class="radio-card"><input type="radio" name="mukim" value="Sedikit / Kurang padat"> Sedikit / Kurang padat</label>
+                    <label class="radio-card"><input type="radio" name="mukim" value="Terbatas / Beberapa"> Terbatas / Beberapa</label>
+                    <label class="radio-card"><input type="radio" name="mukim" value="Tidak terdapat"> Tidak terdapat</label>
+                  </div>
+                  <div class="error-msg" id="err-f-mukim">wajib dipilih</div>
+                </div>
+                <div class="form-group">
+                  <label>• Hak Milik <span class="opt">(optional)</span></label>
+                  <div class="radio-group" id="g-hak">
+                    <label class="radio-card"><input type="radio" name="hak" value="> 80%"> (&gt; 80%)</label>
+                    <label class="radio-card"><input type="radio" name="hak" value="80%"> (80%)</label>
+                    <label class="radio-card"><input type="radio" name="hak" value="< 40%"> (&lt; 40%)</label>
+                    <label class="radio-card"><input type="radio" name="hak" value="Tidak ada"> (Tidak ada)</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 5. KONDISI SALURAN -->
+              <h3>5. Kondisi Saluran Saat Ini <span class="opt" style="font-weight:400;font-size:12px;color:#6b7280">(optional)</span></h3>
+              <div class="form-grid">
+                <div class="form-group"><label>a. Sedimentasi</label><input type="text" id="f-sedimen" placeholder="Diisi angka / teks"></div>
+                <div class="form-group"><label>b. Sampah</label><input type="text" id="f-sampah" placeholder="Diisi angka / teks"></div>
+              </div>
+
+              <!-- 6. KOORDINAT -->
+              <h3>6. Koordinat & Maps (Geo Location) <span class="req">*</span></h3>
+              <p class="hint">Minimal <b>2 titik</b> (Titik Awal & Titik Akhir). Pilih tombol titik, lalu <b>klik pada peta</b> atau isi koordinat manual format <b>lat,lng</b> (contoh: -2.9909,104.7565).</p>
+              <div class="point-btns">
+                <button type="button" class="point-btn active" id="pb-awal" onclick="setActivePoint('awal')">📍 Titik Awal</button>
+                <button type="button" class="point-btn" id="pb-tengah" onclick="setActivePoint('tengah')">📍 Titik Tengah</button>
+                <button type="button" class="point-btn" id="pb-akhir" onclick="setActivePoint('akhir')">📍 Titik Akhir</button>
+                <button type="button" class="point-btn" onclick="useMyLocation()">🧭 Lokasi Saya</button>
+              </div>
+              <div id="geo-premium-info" class="geo-info">Akurasi GPS: <b id="gps-acc-val">-</b> meter | Arah Kompas: <b id="compass-val">-° (-)</b></div>
+              <div class="form-group"><label>Titik Awal (lat,lng) <span class="req">*</span></label><input type="text" id="f-koor-awal" placeholder="-2.9909,104.7565" oninput="refreshFormMap()"></div>
+              <div class="form-group"><label>Titik Tengah (lat,lng) <span class="opt">(optional)</span></label><input type="text" id="f-koor-tengah" placeholder="-2.9919,104.7575" oninput="refreshFormMap()"></div>
+              <div class="form-group"><label>Titik Akhir (lat,lng) <span class="req">*</span></label><input type="text" id="f-koor-akhir" placeholder="-2.9929,104.7585" oninput="refreshFormMap()"></div>
+              <div class="error-msg" id="err-f-koor">wajib menambahkan minimal 2 titik koordinat (Awal & Akhir)</div>
+              <div id="form-map" class="map-box" style="margin-top:10px"></div>
+
+              <!-- 7. FOTO -->
+              <h3>7. Foto Dokumentasi <span class="req">*</span></h3>
+              <p class="hint">Wajib <b>minimal 2 foto</b>, maksimal <b>50 foto</b>. Otomatis watermark + kompress &lt;400KB.</p>
+              <div class="photo-drop" id="photo-zone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="dropPhotos(event)">
+                <div class="big">📷</div>
+                <b>Ambil / Tambah Foto</b>
+                <p class="hint">Ketuk tombol — atau seret &amp; letakkan file ke sini (PC/Laptop)</p>
+                <div class="btn-row photo-btns">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('f-foto-cam').click()">📷 Kamera Langsung</button>
+                  <button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('f-foto').click()">🖼️ Galeri / File</button>
+                </div>
+                <p class="hint">JPG / PNG — <span id="foto-count">0</span>/50 foto</p>
+                <input type="file" id="f-foto-cam" accept="image/*" capture="environment" multiple style="display:none" onchange="handlePhotos(event,'camera')">
+                <input type="file" id="f-foto" accept="image/*" multiple style="display:none" onchange="handlePhotos(event,'upload')">
+                <div class="foto-progress" id="foto-progress" style="display:none"><span id="foto-progress-bar"></span></div>
+                <p class="hint" id="foto-progress-text" style="display:none"></p>
+              </div>
+              <div class="error-msg" id="err-f-foto">wajib menambahkan minimal 2 foto</div>
+              <div class="photo-grid" id="foto-preview"></div>
+
+              <!-- 8. USULAN -->
+              <h3>8. Usulan & Deskripsi Lokasi <span class="opt" style="font-weight:400;font-size:12px;color:#6b7280">(optional, max 10.000 karakter)</span></h3>
+              <div class="form-group">
+                <label>Uraian</label>
+                <textarea id="f-uraian" maxlength="10000" placeholder="Tulis uraian usulan dan deskripsi lokasi..." oninput="document.getElementById('uraian-count').textContent=this.value.length"></textarea>
+                <div class="char-count"><span id="uraian-count">0</span> / 10.000</div>
+              </div>
+
+              <!-- 9. STATUS -->
+              <h3>9. Status <span class="opt" style="font-weight:400;font-size:12px;color:#6b7280">(optional)</span></h3>
+              <div class="radio-group" id="g-status">
+                <label class="radio-card"><input type="radio" name="status" value="Clean & Clear"> ✅ Clean & Clear</label>
+                <label class="radio-card"><input type="radio" name="status" value="Belum Clean & Clear"> ⏳ Belum Clean & Clear</label>
+              </div>
+
+              <div class="btn-row">
+                <button type="submit" class="btn btn-success" id="btn-save">💾 Save</button>
+                <button type="button" class="btn btn-outline" onclick="resetSurveyForm()">🔄 Reset Form</button>
+                <button type="button" class="btn btn-ghost" id="btn-cancel-edit" style="display:none" onclick="cancelEdit()">✖ Batal Edit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ===== ADMIN: BIG DATA ===== -->
+        <div id="admin-big" style="display:none">
+          <div class="card">
+            <h2>🗂️ Big Data Survey</h2>
+            <p class="subtitle">Klik <b>No. ID Survey</b> untuk melihat detail & mengedit. Total: <b id="big-total">0</b> data.</p>
+            <div class="stat-grid" id="admin-stats"></div>
+            <div class="table-toolbar">
+              <input type="text" id="big-search" placeholder="🔍 Cari No.ID Survey / No.ID Usulan..." oninput="bigPage=1;renderBigTable()">
+            </div>
+            <div class="filter-row">
+              <select id="flt-tahun" onchange="bigPage=1;renderBigTable()"><option value="">Tahun: Semua</option></select>
+              <select id="flt-kab" onchange="onFilterKabChange('admin')"><option value="">Kota/Kab: Semua</option></select>
+              <select id="flt-kec" onchange="onFilterKecChange('admin')"><option value="">Kecamatan: Semua</option></select>
+              <select id="flt-kel" onchange="bigPage=1;renderBigTable()"><option value="">Kelurahan: Semua</option></select>
+            </div>
+            <div class="btn-row" style="margin:0 0 12px">
+              <button class="btn btn-success btn-sm" onclick="exportBigPage('excel')">📗 Export Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="exportBigPage('pdf')">📕 Export PDF</button>
+              <button class="btn btn-warning btn-sm" onclick="exportBigPage('word')">📘 Export Word</button>
+              <button class="btn btn-ghost btn-sm" onclick="resetAdminFilter()">🔄 Reset Filter</button>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>No</th><th>Tahun</th><th>No.ID Survey</th><th>ID Usulan</th><th>Kota/Kabupaten</th><th>Kecamatan</th><th>Kelurahan</th><th>Aksi</th></tr></thead>
+                <tbody id="big-tbody"></tbody>
+              </table>
+            </div>
+            <div class="pager-row">
+              <select id="big-perpage" onchange="bigSetPer(this.value)">
+                <option value="10">10 / halaman</option>
+                <option value="25">25 / halaman</option>
+                <option value="50">50 / halaman</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" id="big-prev" onclick="bigGoto(bigPage-1)">‹ Prev</button>
+              <span id="big-pageinfo" class="page-info"></span>
+              <button class="btn btn-ghost btn-sm" id="big-next" onclick="bigGoto(bigPage+1)">Next ›</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ADMIN: GRAFIK ===== -->
+        <div id="admin-grafik" style="display:none">
+          <div class="card">
+            <h2>📊 Monitoring Report — Grafik</h2>
+            <p class="subtitle">Grafik per-tahun, per-kecamatan, per-kelurahan & per-petugas survey.</p>
+            <div class="chart-grid">
+              <div class="chart-card"><h4>📅 Data per-Tahun</h4><canvas id="ch-tahun"></canvas></div>
+              <div class="chart-card"><h4>👷 Data per-Petugas Survey</h4><canvas id="ch-petugas"></canvas></div>
+              <div class="chart-card"><h4>🏘️ Data per-Kecamatan</h4><canvas id="ch-kecamatan"></canvas></div>
+              <div class="chart-card"><h4>🏡 Data per-Kelurahan (Top 10)</h4><canvas id="ch-kelurahan"></canvas></div>
+              <div class="chart-card"><h4>🌊 Banjir vs Tidak Banjir</h4><canvas id="ch-banjir"></canvas></div>
+              <div class="chart-card"><h4>✅ Status Clean & Clear</h4><canvas id="ch-status"></canvas></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-success btn-sm" onclick="exportRowsChunked(getAllSurveys(),'excel')">📗 Export Excel</button>
+              <button class="btn btn-primary btn-sm" onclick="exportRowsChunked(getAllSurveys(),'pdf')">📕 Export PDF</button>
+              <button class="btn btn-warning btn-sm" onclick="exportRowsChunked(getAllSurveys(),'word')">📘 Export Word</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW: MONITORING ==================== -->
+  <section id="view-monitoring" class="view">
+    <div class="page-bar">
+      <button class="back" onclick="showView('view-landing')">‹</button>
+      <div class="pt"><b id="mon-page-title">🗺️ Peta Monitoring</b><small><span id="mon-total-mini">0</span> data survey</small></div>
+      <div class="avatar-mini">👁️</div>
+    </div>
+    <div class="card">
+      <h2>🗺️ Dashboard Monitoring</h2>
+      <p class="subtitle">Peta seluruh titik koordinat & laporan database. Total: <b id="mon-total">0</b> data survey.</p>
+      <div class="stat-grid" id="mon-stats"></div>
+      <div class="tabs">
+        <button class="tab-btn active" id="mtab-peta" onclick="monTab('peta')">🗺️ Peta Monitoring</button>
+        <button class="tab-btn" id="mtab-report" onclick="monTab('report')">📋 Monitoring Report</button>
+        <button class="tab-btn" id="mtab-grafik" onclick="monTab('grafik')">📊 Grafik Report</button>
+        <button class="tab-btn" onclick="showView('view-landing')" style="margin-left:auto">🏠 Dashboard Awal</button>
+      </div>
+
+      <div id="mpane-peta" class="tab-pane active">
+        <div class="table-toolbar">
+          <select id="mon-flt-tahun" onchange="renderMonitoringMap()"><option value="">Tahun: Semua</option></select>
+          <select id="mon-flt-kab" onchange="onFilterKabChange('mon');renderMonitoringMap()"><option value="">Kota/Kab: Semua</option></select>
+        </div>
+        <div id="mon-map" class="map-box tall"></div>
+        <p class="hint" style="margin-top:8px">Klik marker untuk melihat: No.ID Survey, ID Usulan, Alamat, Tahun, Petugas & Foto.</p>
+      </div>
+
+      <div id="mpane-report" class="tab-pane">
+        <div class="table-toolbar">
+          <input type="text" id="mon-search" placeholder="🔍 Cari No.ID Survey / No.ID Usulan..." oninput="renderMonTable()">
+        </div>
+        <div class="filter-row">
+          <select id="mon-flt-tahun2" onchange="renderMonTable()"><option value="">Tahun: Semua</option></select>
+          <select id="mon-flt-kab2" onchange="onFilterKabChange('mon2');renderMonTable()"><option value="">Kota/Kab: Semua</option></select>
+          <select id="mon-flt-kec2" onchange="onFilterKecChange('mon2');renderMonTable()"><option value="">Kecamatan: Semua</option></select>
+          <select id="mon-flt-kel2" onchange="renderMonTable()"><option value="">Kelurahan: Semua</option></select>
+        </div>
+        <div class="btn-row" style="margin:0 0 12px">
+          <button class="btn btn-success btn-sm" onclick="exportRowsChunked(getFilteredMon(),'excel')">📗 Export Excel</button>
+          <button class="btn btn-primary btn-sm" onclick="exportRowsChunked(getFilteredMon(),'pdf')">📕 Export PDF</button>
+          <button class="btn btn-warning btn-sm" onclick="exportRowsChunked(getFilteredMon(),'word')">📘 Export Word</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>No</th><th>Tahun</th><th>No.ID Survey</th><th>ID Usulan</th><th>Kota/Kabupaten</th><th>Kecamatan</th><th>Kelurahan</th></tr></thead>
+            <tbody id="mon-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="mpane-grafik" class="tab-pane">
+        <div class="chart-grid">
+          <div class="chart-card"><h4>📅 Data per-Tahun</h4><canvas id="mch-tahun"></canvas></div>
+          <div class="chart-card"><h4>👷 Data per-Petugas Survey</h4><canvas id="mch-petugas"></canvas></div>
+          <div class="chart-card"><h4>🏘️ Data per-Kecamatan</h4><canvas id="mch-kecamatan"></canvas></div>
+          <div class="chart-card"><h4>🏡 Data per-Kelurahan (Top 10)</h4><canvas id="mch-kelurahan"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ==================== DETAIL MODAL ==================== -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="detail-title">Detail Data Survey</h3>
+      <button class="modal-close" onclick="closeModal()">✖</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+  <button class="close" onclick="document.getElementById('lightbox').classList.remove('show')">✖</button>
+  <img id="lightbox-img" src="" alt="Foto">
+</div>
+
+<!-- Export Progress Modal (chunk processing) -->
+<div class="modal-overlay export-dark" id="export-progress-modal">
+  <div class="modal export-modal-box">
+    <div class="modal-header">
+      <h3>📦 Ekspor Data Massal</h3>
+    </div>
+    <div class="modal-body">
+      <div class="progress-bar-container"><div id="export-progress-bar"></div></div>
+      <p id="export-progress-text" class="export-progress-text">Memproses data: 0 / 0 baris... Mohon tunggu</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation: Admin -->
+<nav id="bottom-nav-admin" class="bottom-nav">
+  <button id="bn-home" onclick="adminNav('home')"><span class="bi">🏠</span><span>Home</span></button>
+  <button id="bn-new" onclick="adminNav('new')"><span class="bi">📝</span><span>Input</span></button>
+  <button id="bn-big" onclick="adminNav('big')"><span class="bi">🗂️</span><span>Data</span><span class="bdot" id="bn-badge">0</span></button>
+  <button id="bn-grafik" onclick="adminNav('grafik')"><span class="bi">📊</span><span>Grafik</span></button>
+  <button onclick="doLogout()"><span class="bi">🚪</span><span>Keluar</span></button>
+</nav>
+
+<!-- Bottom Navigation: Monitoring -->
+<nav id="bottom-nav-mon" class="bottom-nav">
+  <button onclick="showView('view-landing')"><span class="bi">🏠</span><span>Home</span></button>
+  <button id="bm-peta" onclick="monTab('peta')"><span class="bi">🗺️</span><span>Peta</span></button>
+  <button id="bm-report" onclick="monTab('report')"><span class="bi">📋</span><span>Report</span></button>
+  <button id="bm-grafik" onclick="monTab('grafik')"><span class="bi">📊</span><span>Grafik</span></button>
+</nav>
+
+<!-- Toast -->
+<div id="toast-wrap"></div>
+
+<footer class="app-footer">
+  Developer Apps : <b>M.Afifi Eka Putra, S.E — CV. Kayu Awet Sejahtera</b>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

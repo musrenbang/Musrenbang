@@ -1,0 +1,28 @@
+{
+  "name": "MUSRENBANG APPS 2027",
+  "short_name": "Musrenbang2027",
+  "description": "Aplikasi Survey Musyawarah Perencanaan Pembangunan — Provinsi Sumatera Selatan",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef3fb",
+  "theme_color": "#0b5fff",
+  "icons": [
+    {
+      "src": "img/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

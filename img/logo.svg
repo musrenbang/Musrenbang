@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <linearGradient id="blueGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="35%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#0849c4"/>
+    </linearGradient>
+    <linearGradient id="blueGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#06307c"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="#ffffff" rx="40"/>
+
+  <!-- Swirl Group centered at 300, 300 -->
+  <g transform="translate(300, 300)">
+    <!-- 4 Swirling Figures rotated at 0, 90, 180, 270 deg -->
+    <g transform="rotate(0)">
+      <circle cx="130" cy="-155" r="24" fill="url(#blueGrad1)" />
+      <path d="M 40 -115 C 110 -185, 205 -115, 215 -10 C 220 50, 190 120, 140 170 C 180 100, 185 20, 140 -40 C 105 -85, 60 -105, 40 -115 Z" fill="url(#blueGrad1)" />
+      <path d="M -60 -120 C 40 -150, 120 -110, 150 -30 C 120 -80, 50 -115, -60 -120 Z" fill="url(#blueGrad2)" opacity="0.9" />
+      <path d="M 215 -10 C 255 -60, 220 -140, 175 -190 C 165 -150, 185 -100, 215 -10 Z" fill="#38bdf8" opacity="0.85" />
+    </g>
+    <g transform="rotate(90)">
+      <circle cx="130" cy="-155" r="24" fill="url(#blueGrad1)" />
+      <path d="M 40 -115 C 110 -185, 205 -115, 215 -10 C 220 50, 190 120, 140 170 C 180 100, 185 20, 140 -40 C 105 -85, 60 -105, 40 -115 Z" fill="url(#blueGrad1)" />
+      <path d="M -60 -120 C 40 -150, 120 -110, 150 -30 C 120 -80, 50 -115, -60 -120 Z" fill="url(#blueGrad2)" opacity="0.9" />
+      <path d="M 215 -10 C 255 -60, 220 -140, 175 -190 C 165 -150, 185 -100, 215 -10 Z" fill="#38bdf8" opacity="0.85" />
+    </g>
+    <g transform="rotate(180)">
+      <circle cx="130" cy="-155" r="24" fill="url(#blueGrad1)" />
+      <path d="M 40 -115 C 110 -185, 205 -115, 215 -10 C 220 50, 190 120, 140 170 C 180 100, 185 20, 140 -40 C 105 -85, 60 -105, 40 -115 Z" fill="url(#blueGrad1)" />
+      <path d="M -60 -120 C 40 -150, 120 -110, 150 -30 C 120 -80, 50 -115, -60 -120 Z" fill="url(#blueGrad2)" opacity="0.9" />
+      <path d="M 215 -10 C 255 -60, 220 -140, 175 -190 C 165 -150, 185 -100, 215 -10 Z" fill="#38bdf8" opacity="0.85" />
+    </g>
+    <g transform="rotate(270)">
+      <circle cx="130" cy="-155" r="24" fill="url(#blueGrad1)" />
+      <path d="M 40 -115 C 110 -185, 205 -115, 215 -10 C 220 50, 190 120, 140 170 C 180 100, 185 20, 140 -40 C 105 -85, 60 -105, 40 -115 Z" fill="url(#blueGrad1)" />
+      <path d="M -60 -120 C 40 -150, 120 -110, 150 -30 C 120 -80, 50 -115, -60 -120 Z" fill="url(#blueGrad2)" opacity="0.9" />
+      <path d="M 215 -10 C 255 -60, 220 -140, 175 -190 C 165 -150, 185 -100, 215 -10 Z" fill="#38bdf8" opacity="0.85" />
+    </g>
+
+    <!-- Central Inner Circle -->
+    <circle cx="0" cy="0" r="115" fill="#ffffff" stroke="#93c5fd" stroke-width="3" />
+    <circle cx="0" cy="0" r="102" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="7 5" opacity="0.7" />
+
+    <!-- Center Typography "2027" -->
+    <text x="0" y="24" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="64" fill="url(#textGrad)" text-anchor="middle" letter-spacing="4">2027</text>
+  </g>
+</svg>

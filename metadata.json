@@ -1,0 +1,8 @@
+{
+  "name": "MUSRENBANG APPS 2027",
+  "description": "Aplikasi Survey Musyawarah Perencanaan Pembangunan Provinsi Sumatera Selatan Vers.1.1.2 - CV. Kayu Awet Sejahtera",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
